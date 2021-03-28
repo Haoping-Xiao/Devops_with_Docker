@@ -1,0 +1,2 @@
+docker build -t frontend .
+docker run --rm -p 3000:5000 frontend
