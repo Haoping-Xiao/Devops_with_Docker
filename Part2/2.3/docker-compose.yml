@@ -1,0 +1,16 @@
+version: "3.5"
+services:
+  backend:
+    build: example-backend/
+    image: backend:latest
+    environment:
+      - REQUEST_ORIGIN=http://localhost:5000
+    ports:
+      - 8080:8080
+    container_name: backend
+  frontend:
+    build: example-frontend/
+    image: frontend:latest
+    ports:
+      - 5000:5000
+    container_name: frontend

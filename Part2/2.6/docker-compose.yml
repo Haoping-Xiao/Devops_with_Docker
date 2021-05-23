@@ -1,0 +1,41 @@
+version: "3.5"
+services:
+
+  backend:
+    build: backend/
+    image: backend
+    ports:
+      - 8000:8000
+    container_name: backend
+    environment:
+      - REDIS=redis
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=example
+      - DB_NAME=postgres #POSTGRES_DB
+      - DB_HOST=postgres #service name
+    depends_on:
+      - redis
+      - postgres
+      
+  frontend:
+    build: frontend/
+    image: frontend
+    ports:
+      - 5000:5000
+    container_name: frontend
+    depends_on:
+      - backend
+      
+  redis:
+    image: redis
+    container_name: redis
+
+  postgres:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: example
+    container_name: db_postgres
+
+
