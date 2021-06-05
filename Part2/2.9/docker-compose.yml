@@ -2,31 +2,33 @@ version: "3.5"
 services:
 
   backend:
-    build: backend/
+    build: example-backend/
     image: backend
     container_name: backend
     environment:
-      - REDIS=redis
-      - DB_USERNAME=postgres
-      - DB_PASSWORD=example
-      - DB_NAME=postgres
-      - DB_HOST=postgres
+      - REDIS_HOST=redis
+      - REQUEST_ORIGIN=http://localhost
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=example
+      - POSTGRES_DATABASE=postgres #POSTGRES_DB
+      - POSTGRES_HOST=postgres #service name
     depends_on:
       - redis
       - postgres
       
   frontend:
-    build: frontend/
+    build: example-frontend/
     image: frontend
     container_name: frontend
+    environment: 
+      - REACT_APP_BACKEND_URL=http://localhost/api/
     depends_on:
       - backend
       
   redis:
     image: redis
     container_name: redis
-    volumes:
-        - /tmp/redisData:/data
+
   postgres:
     image: postgres
     restart: unless-stopped
@@ -35,7 +37,8 @@ services:
       POSTGRES_DB: postgres
     container_name: db_postgres
     volumes:
-        - ./database:/var/lib/postgresql/data
+      - ./database:/var/lib/postgresql/data
+
   nginx:
     image: nginx
     container_name: nginx
@@ -43,7 +46,6 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
       - 80:80
-      - 8000:8000
     depends_on:
       - frontend
       - backend

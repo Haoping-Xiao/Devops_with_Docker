@@ -2,23 +2,24 @@ version: "3.5"
 services:
 
   backend:
-    build: backend/
+    build: example-backend/
     image: backend
     ports:
-      - 8000:8000
+      - 8080:8080
     container_name: backend
     environment:
-      - REDIS=redis
-      - DB_USERNAME=postgres
-      - DB_PASSWORD=example
-      - DB_NAME=postgres #POSTGRES_DB
-      - DB_HOST=postgres #service name
+      - REDIS_HOST=redis
+      - REQUEST_ORIGIN=http://localhost:5000
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=example
+      - POSTGRES_DATABASE=postgres #POSTGRES_DB
+      - POSTGRES_HOST=postgres #service name
     depends_on:
       - redis
       - postgres
       
   frontend:
-    build: frontend/
+    build: example-frontend/
     image: frontend
     ports:
       - 5000:5000
