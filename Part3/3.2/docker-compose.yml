@@ -1,0 +1,12 @@
+version: "3.5"
+
+services:
+  build-image:
+    image: haopingxiao/build-image-tool
+    build: .
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    volumes: 
+      - /var/run/docker.sock:/var/run/docker.sock
+    container_name: build-image
+    command: ./script.sh https://github.com/docker-hy/docker-hy.github.io.git build-image-tool
